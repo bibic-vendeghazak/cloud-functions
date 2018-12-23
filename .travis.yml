@@ -13,7 +13,7 @@ script:
   # NOTE: Add tests
   # - yarn test:coverage
 before_deploy:
-  script: firebase use default
+  - firebase use default
 deploy:
   skip_cleanup: true
   provider: script
