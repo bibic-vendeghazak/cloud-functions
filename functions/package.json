@@ -5,8 +5,8 @@
   "name": "functions",
   "description": "Cloud Functions for Bíbic Vendégházak",
   "scripts": {
-    "lint": "./node_modules/.bin/eslint ./src",
-    "clean": "rm -rf lib && rm -f index.js",
+    "lint": "./node_modules/.bin/eslint src",
+    "clean": "rm index.js; rm -rf lib",
     "serve": "firebase serve --only functions",
     "shell": "firebase experimental:functions:shell",
     "build": "npm run clean; babel src/index.js -o index.js; babel src/lib -d lib",
@@ -30,7 +30,9 @@
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.2.2",
     "@babel/preset-env": "^7.2.3",
+    "babel-eslint": "^10.0.1",
     "eslint": "^5.10.0",
     "eslint-plugin-promise": "^4.0.1"
   },

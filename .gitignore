@@ -64,6 +64,6 @@ typings/
 # Own stuff
 *.min.html
 rules
-/lib
-/index.js
+functions/lib
+functions/index.js
 service-account-credentials.json
