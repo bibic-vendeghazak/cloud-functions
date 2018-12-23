@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-- '8'
+  - '8'
 cache:
   directories:
   - node_modules
@@ -11,9 +11,11 @@ script:
   - yarn build
   # NOTE: Add tests
   # - yarn test:coverage
+before_deploy:
+  script: firebase use default
 deploy:
   skip_cleanup: true
   provider: script
-  script: firebase use default;yarn deploy
+  script: firebase deploy --token "$FIREBASE_TOKEN"
   on:
     all_branches: true
