@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "staging": "bibic-vendeghazak-api",
+    "default": "bibic-vendeghazak-api"
+  }
+}

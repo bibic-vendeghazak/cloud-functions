@@ -59,3 +59,11 @@ typings/
 
 # next.js build output
 .next
+
+
+# Own stuff
+*.min.html
+rules
+/lib
+/index.js
+service-account-credentials.json
