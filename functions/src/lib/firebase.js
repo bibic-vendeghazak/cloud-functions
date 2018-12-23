@@ -1,6 +1,6 @@
 import * as admin from "firebase-admin"
 import * as firebaseFunctions from "firebase-functions"
-import serviceAccount from "../service-account-credentials.json"
+import serviceAccount from "../../service-account-credentials.json"
 
 export const functions = firebaseFunctions.region("europe-west1")
 
