@@ -6,24 +6,22 @@ path / {
     }
   }
   /galleries {
-    /{galleryType}/{gallery}/{galleryItem} is Picture {}
+    /{galleries}/{gallery} is Picture {}
     read() {true}
     write() {isAdmin()}
   }
   /paragraphs {
-    /{paragraphType}/{paragraphs}/{paragraph} is Paragraph {}
+    /{paragraphs}/{paragraph} is Paragraph {}
     read() {true}
     write() {isAdmin()}
   }
   /reservationDates {
     /{year}/{month}/{day}/{room}/{reservationId} is Reservation {}
-    read() {false}
-    write() {false}
+    read() {isAdmin()}
   }
   /roomServices {
     /{roomServiceId} is RoomService {}
     read() {true}
-    write() {isAdmin()}
   }
   /rooms {
     /{roomId} is Room {}
@@ -50,17 +48,17 @@ isRightAdmin(uid) {
 
 // Gallery related
 type Picture {
-  title: String
-  desc: String
-  SIZE_360: String
-  SIZE_640: String
-  SIZE_768: String
-  SIZE_1024: String
-  SIZE_1280: String
-  SIZE_1440: String
-  SIZE_ORIGINAL: String
-  fileName: String
-  order: Number
+  title: String | Null
+  desc: String | Null
+  SIZE_360: String | Null
+  SIZE_640: String | Null
+  SIZE_768: String | Null
+  SIZE_1024: String | Null
+  SIZE_1280: String | Null
+  SIZE_1440: String | Null
+  SIZE_ORIGINAL: String | Null
+  fileName: String | Null
+  order: Number | Null
 }
 
 
@@ -83,6 +81,7 @@ type RoomService {
   name: String
   icon: String
   inRoom: Object
+  write() {isAdmin()}
 }
 
 
@@ -98,9 +97,11 @@ type Prices {
   metadata: PriceMetadata
   // REVIEW: Define better
   table: Object
+  write() {isAdmin()}
 }
 
 type PriceMetadata {
   maxPeople: Number
   minPrice: Number
+  write() {isAdmin()}
 }
