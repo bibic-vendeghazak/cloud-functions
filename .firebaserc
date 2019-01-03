@@ -1,5 +1,7 @@
 {
   "projects": {
-    "default": "bibic-vendeghazak-api"
+    "default": "bibic-vendeghazak-api",
+    "master": "bibic-vendeghazak-api",
+    "develop": "bibic-vendeghazak-admin-beta"
   }
 }

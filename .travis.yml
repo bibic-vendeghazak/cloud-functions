@@ -9,15 +9,15 @@ before_install:
   -in service-account-credentials.json.enc -out functions/service-account-credentials.json
   -d
 install:
+- yarn global add firebase-tools
 - cd functions
 - yarn
-- yarn global add firebase-tools
-- firebase use default
 script:
+- yarn bolt
 - yarn build
 deploy:
   skip_cleanup: true
   provider: script
-  script: firebase deploy --token $FIREBASE_TOKEN
+  script: firebase deploy -P default --token $FIREBASE_TOKEN
   on:
     branch: master
