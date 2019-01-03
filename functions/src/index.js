@@ -23,10 +23,15 @@ export const getOverlaps = functions.https
 export const {messageCreated} = messages
 
 
+
 // Room handling 🏘
 export const populatePrices = functions.database
-  .ref("rooms/{roomId}/prices/metadata")
+  .ref("rooms/{roomId}/prices/metadata/maxPeople")
   .onUpdate(prices.populate)
+
+export const calculateMinPrices = functions.database
+  .ref("rooms/{roomId}/prices/table/")
+  .onUpdate(prices.calculateMinPrices)
 
 
 

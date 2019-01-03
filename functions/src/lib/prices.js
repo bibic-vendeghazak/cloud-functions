@@ -19,7 +19,7 @@ const childCombinations = (old, maxPeople, children) => {
       price: old.price || 0
     }
   } else {
-    combinations = old[combination] ? old[combination] : {
+    combinations = old[combination] || {
       price: 0,
       name: `${maxPeople} felnőtt, ${combination.split("_").length} gyerek (6-12)`
     }
@@ -38,7 +38,7 @@ const generatePrices = (old, maxPeople) => {
   for (let adults = 1; adults <= maxPeople; adults++) {
     const adultGroup = {}
     for (let children = 0; children <= maxPeople - 1; children++) {
-      if (adults+children <= maxPeople) {
+      if (adults + children <= maxPeople) {
         const oldPrice = old && old[adults] && old[adults][children] ? old[adults][children] : {}
         adultGroup[children] = childCombinations(oldPrice, adults, children)
       }
@@ -51,22 +51,35 @@ const generatePrices = (old, maxPeople) => {
 
 
 
-export const populate = (change, context) => {
-  const {roomId} = context.params
-  const {maxPeople} = change.after.val()
+export async function populate(change, {params: {roomId}}) {
+  const maxPeople = change.after.val()
   const priceTableRef = ROOMS_DB.child(`${roomId}/prices/table`)
-  const priceTypes = ["breakfast", "halfBoard"]
-  const promises = priceTypes.map(priceType =>
-    priceTableRef
-      .child(priceType)
-      .once("value", snap => snap.val())
+  const oldPrices = await (await priceTableRef.once("value")).val()
+
+  return Promise.all(
+    Object.entries(oldPrices)
+    .map(([foodService, oldValues]) =>
+      priceTableRef
+        .child(foodService)
+        .set(generatePrices(oldValues, maxPeople))
+    )
   )
-  return Promise
-    .all(promises)
-    .then(values => {
-      return priceTableRef.set({
-        "breakfast": generatePrices(values[0].val(), maxPeople),
-        "halfBoard": generatePrices(values[1].val(), maxPeople)
+}
+
+
+export function calculateMinPrices(change, {params: {roomId}}) {
+  let minPrice = Infinity
+  const priceTable = change.after.val()
+  Object.entries(priceTable).forEach(([_, value ]) => {
+    Object.entries(value).forEach(([adult, value]) => {
+      Object.entries(value).forEach(([children, {price}]) => {
+        const headCount = parseInt(adult, 10) + parseInt(children, 10)
+        const pricePerPerson = Math.round(price / headCount)
+        if (pricePerPerson < minPrice) {
+          minPrice = pricePerPerson
+        }
       })
     })
+  })
+  return ROOMS_DB.child(`${roomId}/prices/metadata/minPrice`).set(minPrice)
 }
