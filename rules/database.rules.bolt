@@ -1,0 +1,106 @@
+path / {
+  /admins {
+    /{adminId} is Admin {
+      read() {isAdmin()}
+      write() {isRightAdmin(key())}
+    }
+  }
+  /galleries {
+    /{galleryType}/{gallery}/{galleryItem} is Picture {}
+    read() {true}
+    write() {isAdmin()}
+  }
+  /paragraphs {
+    /{paragraphType}/{paragraphs}/{paragraph} is Paragraph {}
+    read() {true}
+    write() {isAdmin()}
+  }
+  /reservationDates {
+    /{year}/{month}/{day}/{room}/{reservationId} is Reservation {}
+    read() {false}
+    write() {false}
+  }
+  /roomServices {
+    /{roomServiceId} is RoomService {}
+    read() {true}
+    write() {isAdmin()}
+  }
+  /rooms {
+    /{roomId} is Room {}
+    read() {true}
+    write() {isAdmin()}
+  }
+}
+
+// Admin related
+type Admin {
+  name: String
+  src: String
+  lastSignInTime: String | Null
+}
+
+isAdmin() {
+  return auth.uid != null && root.admins[auth.uid] != null
+}
+
+isRightAdmin(uid) {
+  return isAdmin() && auth.uid === uid
+}
+
+
+// Gallery related
+type Picture {
+  title: String
+  desc: String
+  SIZE_360: String
+  SIZE_640: String
+  SIZE_768: String
+  SIZE_1024: String
+  SIZE_1280: String
+  SIZE_1440: String
+  SIZE_ORIGINAL: String
+  fileName: String
+  order: Number
+}
+
+
+// Paragraph related
+type Paragraph {
+  text: String
+  order: Number
+}
+
+
+// Reservation related
+type Reservation {
+  from: Boolean
+  to: Boolean
+}
+
+
+// Room service related
+type RoomService {
+  name: String
+  icon: String
+  inRoom: Object
+}
+
+
+// Room related
+type Room {
+  unavailable: String | Null
+  description: String
+  id: Number
+  prices: Prices
+}
+
+type Prices {
+  metadata: PriceMetadata
+  // REVIEW: Define better
+  table: Object
+}
+
+type PriceMetadata {
+  maxPeople: Number
+  minPrice: Number
+}

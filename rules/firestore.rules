@@ -1,0 +1,112 @@
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /reservations/{reservationId} {
+      allow read, delete, update: if isAdmin(request.auth.uid)
+      allow create: if isValidNewReservation(request.resource.data)
+    }
+    match /messages/{messageId} {
+      allow read, delete, update: if isAdmin(request.auth.uid)
+      allow create: if isValidNewMessage(request.resource.data, request.time)
+    }
+    match /feedbacks/{feedbackId} {
+      allow delete, update: if isAdmin(request.auth.uid)
+      allow create: if isValidNewFeedback(request.resource.data, request.resource.id)
+      allow read: if resource.data.accepted || isAdmin(request.auth.uid)
+    }
+    
+    /// Functions ///
+    function isAdmin(uid) {
+      return (uid == "lcmGTCzmIQeDXbX3SJ4r2uRdDK12" ||
+              uid == "UIzrZyDOqjSSU3snJDwqDTKyoT32" ||
+              uid == "kfOdbRqwzMWYJySf2fiJfeJ2g3x1" ||
+              uid == "KXoYY6Sc4tR61yAPRyjOygMFr162")
+    }
+    
+    function isValidNewReservation(r) {
+    	return (
+      	r.size() == 17 &&
+        r.keys().hasAll([
+        	"roomId", "id", "lastHandledBy", "handled",
+          "name", "email", "tel", "message", 
+          "timestamp", "adults", "children", "price", 
+          "foodService", "address", "from", "to", "archived"
+        ]) &&
+        r.roomId is number &&
+        r.id is string &&
+        r.roomId >= 1 &&
+        r.lastHandledBy is string &&
+        r.name is string &&
+        r.name != "" &&
+        isEmail(r.email) &&
+        isTel(r.tel) &&
+        r.address is string &&
+        r.address != "" &&
+        r.message is string &&
+        r.adults is int &&
+        r.children is list &&
+        r.price is number &&
+        r.price != 0 &&
+        r.foodService is string &&
+        r.foodService in ["breakfast", "halfBoard"] &&
+        r.handled is bool &&
+        r.archived is bool
+      )
+    }
+    
+    
+    function isValidNewMessage(m, TIME) {
+      return (
+        m.size() == 9 &&
+        m.keys().hasAll([
+        	"accepted", "address", "content",
+          "email", "lastHandledBy", "name",
+          "subject", "tel", "timestamp"
+        ]) &&
+        m.accepted == false &&
+        m.address is string &&
+        m.content is string &&
+        isEmail(m.email) &&
+        m.lastHandledBy == "" &&
+        m.name is string &&
+        m.subject in ["eventHall", "fullHouse", "special", "other"] &&
+        isTel(m.tel) 
+        // && m.timestamp == TIME
+      )
+    }
+    
+    function isRating(rating) {
+  		return (rating is number &&
+        			rating > 0 && rating < 6)
+		}
+    
+    function getReservation(id) {
+    	return get(/databases/$(database)/documents/reservations/$(id))
+    }
+    
+    function isValidNewFeedback(f, feedbackId) {
+    	return(  	
+        //f.timestamp is string &&
+        exists(/databases/$(database)/documents/reservations/$(feedbackId)) &&
+        getReservation(feedbackId).data.id == f.id &&
+        getReservation(feedbackId).data.roomId == f.roomId &&
+        isRating(f.ratings.cleanliness) &&
+        isRating(f.ratings.comfort) &&
+        isRating(f.ratings.staff) &&
+        isRating(f.ratings.services) &&
+        isRating(f.ratings.coffee) &&
+        isRating(f.ratings.food) &&
+        f.accepted == false &&
+        f.content is string
+      )
+    }
+    
+    function isEmail(s) {
+    	return s is string // && s.matches('/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}$/i')
+    }
+    
+    function isTel(t) {
+    	return t is string // && t.matches('[0-9-+\s]')
+    }
+
+  }
+}
