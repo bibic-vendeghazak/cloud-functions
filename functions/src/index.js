@@ -44,7 +44,7 @@ export const deletePictures = functions.database
   .onDelete(pictures.deletePictures)
 
 export const deleteRoomPictures = functions.database
-  .ref("galleries/{galleryId}/{roomId}/{pictureId}")
+  .ref("galleries/szobak/{roomId}/{pictureId}")
   .onDelete(pictures.deletePictures)
 
 

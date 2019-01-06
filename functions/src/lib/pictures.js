@@ -88,10 +88,22 @@ export const generateThumbnail = async object =>  {
  * @param {string} [context.params.roomId] the id of the room where the pictures were deleted from
  */
 export const deletePictures = async (snap, {params: {galleryId, roomId}}) => {
-  console.log("Image deletion detected in the database, deleting images from the Storage...")
-
+  
   const {fileName} = snap.val()
-  const baseURL = `galleries/${galleryId}${roomId ? `/${roomId}`: ""}`
+  let baseURL
+  
+  if (galleryId) {
+    baseURL = `galleries/${galleryId}`
+  } else {
+    if (roomId) {
+      baseURL = `galleries/szobak/${roomId}`
+    } else {
+      return console.log("Exiting...")
+    }
+  }
+
+  console.log("Image deletion detected in the database, deleting images from the Storage...")
+  
 
   const files = [`${baseURL}/${fileName}`]
   sizes.forEach(size => {files.push(`${baseURL}/thumb_${size}_${fileName}`)})
