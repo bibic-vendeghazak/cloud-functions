@@ -8,7 +8,7 @@ export const adminText = reservation => {
 Név: ${name}
 E-mail cím: ${email}
 ${commonFields(reservation)}
-Foglalást utoljára kezelte: ${lastHandledBy}"}
+Foglalást utoljára kezelte: ${lastHandledBy}
 Utoljára módosítva: ${timestamp}
 `
 }

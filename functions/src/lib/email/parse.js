@@ -100,7 +100,7 @@ Megjegyzés: ${message}
 Ellátás: ${foodService}
 Fizetendő összeg: ${price}
 
-*Legkorábbi érkezés 14:00, legkorábbi távozás 10:00
+*Legkorábbi érkezés 14:00, legkésőbbi távozás 10:00
 `
 }
 
