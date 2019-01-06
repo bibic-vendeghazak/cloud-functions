@@ -1,5 +1,9 @@
 service cloud.firestore {
   match /databases/{database}/documents {
+    match /admins/{adminId} {
+      allow write: if false
+      allow read: if isAdmin(request.auth.uid)
+    }
     match /reservations/{reservationId} {
       allow read, delete, update: if isAdmin(request.auth.uid)
       allow create: if isValidNewReservation(request.resource.data)
@@ -16,10 +20,7 @@ service cloud.firestore {
     
     /// Functions ///
     function isAdmin(uid) {
-      return (uid == "lcmGTCzmIQeDXbX3SJ4r2uRdDK12" ||
-              uid == "UIzrZyDOqjSSU3snJDwqDTKyoT32" ||
-              uid == "kfOdbRqwzMWYJySf2fiJfeJ2g3x1" ||
-              uid == "KXoYY6Sc4tR61yAPRyjOygMFr162")
+      return exists(/databases/$(database)/documents/admins/$(uid))
     }
     
     function isValidNewReservation(r) {

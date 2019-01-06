@@ -5,10 +5,15 @@ path / {
       write() {isRightAdmin(key())}
     }
   }
+  
   /galleries {
     /{galleries}/{gallery} is Picture {}
     read() {true}
     write() {isAdmin()}
+  }
+  /feedbacks {
+    /{roomId} is Object {}
+    read() {true}
   }
   /paragraphs {
     /{paragraphs}/{paragraph} is Paragraph {}
@@ -50,11 +55,8 @@ isRightAdmin(uid) {
 type Picture {
   title: String | Null
   desc: String | Null
-  SIZE_360: String | Null
   SIZE_640: String | Null
-  SIZE_768: String | Null
   SIZE_1024: String | Null
-  SIZE_1280: String | Null
   SIZE_1440: String | Null
   SIZE_ORIGINAL: String | Null
   fileName: String | Null
