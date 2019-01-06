@@ -5,7 +5,7 @@ import os from "os"
 import fs from "fs"
 import { database, storage } from "./firebase"
 
-const sizes = [360, 640, 768, 1024, 1280, 1440]
+const sizes = [640, 1024, 1440]
 
 
 export const generateThumbnail = async object =>  {
