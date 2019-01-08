@@ -67,3 +67,4 @@ rules/database.rules.json
 functions/lib
 functions/index.js
 service-account-credentials.json
+beta-service-account-credentials.json
