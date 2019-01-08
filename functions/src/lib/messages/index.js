@@ -1,13 +1,11 @@
-import { functions } from "../firebase"
 import { sendMessageEmails } from "../email"
 
-const messageRef = functions.firestore
-  .document("messages/{messageId}")
-
-
-export const messageCreated = messageRef
-  .onCreate(snap => {
-    const message = snap.data()
-    console.log(`message ${snap.id} created, now sending emails`)
-    return sendMessageEmails(message)
-  })
+/**
+ * Fires an event when a message has been created.
+ * @param {object} message The message itself.
+ */
+export function messageCreated(message) {
+  message = message.data()
+  console.log(`message ${message.id} created, now sending emails`)
+  return sendMessageEmails(message)
+}

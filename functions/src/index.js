@@ -20,7 +20,8 @@ export const getOverlaps = functions.https
 
 
 // Message handling 📯
-export const {messageCreated} = messages
+export const messageCreated = functions.firestore
+  .document("messages/{messageId}").onCreate(messages.messageCreated)
 
 
 
