@@ -20,7 +20,8 @@
     
     "deploy:storage": "firebase deploy --only storage",
 
-    "deploy": "yarn bolt; yarn build; firebase deploy"
+    "deploy": "yarn bolt; yarn build; firebase deploy",
+    "deploy:beta": "BETA=true yarn build;yarn bolt; firebase -P beta deploy"
   },
   "dependencies": {
     "date-fns": "^2.0.0-alpha.26",
