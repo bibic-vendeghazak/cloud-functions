@@ -34,3 +34,4 @@ export const database = firebase.database()
 
 export const RESERVATIONS_FS = firestore.collection("reservations")
 export const ROOMS_DB = database.ref("rooms")
+export const RESERVATION_DATES_DB = database.ref("reservationDates")
