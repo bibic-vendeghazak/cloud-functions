@@ -59,24 +59,16 @@ Köszönjük!
   
 ${FOOTER}`
 
-export const deletedUserText = ({name}) =>
-  `
+export function deletedUserText({name, deleteReason}) {
+  return `
 Tisztelt ${name}!
 
+${deleteReason ||`
 Foglalása törölve lett rendszerünkből.
-Sajnáljuk.
+Sajnáljuk.`}
   
 ${FOOTER}`
-
-
-export const rejectedUserText = ({name, ...reservation}) =>
-  `
-Tisztelt ${name}!
-
-Foglalása az alábbiak szerint módosul:
-${commonFields(reservation)}
-  
-${FOOTER}`
+}
 
 
 export const reservationHTML = async (user, status, reservation) =>
