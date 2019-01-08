@@ -1,4 +1,4 @@
-import {TODAY} from "../constants"
+import {TODAY, CORS_WEB_URL} from "../constants"
 import {subDays } from "date-fns"
 import { RESERVATIONS_FS, ROOMS_DB } from "../firebase"
 
@@ -6,7 +6,7 @@ import { RESERVATIONS_FS, ROOMS_DB } from "../firebase"
  * Return overlaps for a room
  */
 export async function getOverlaps({query: {roomId}}, res) {
-  res.setHeader("Access-Control-Allow-Origin", "*")
+  res.setHeader("Access-Control-Allow-Origin", CORS_WEB_URL)
   const overlaps = []
   
   const unavailable = await ROOMS_DB.child(`${roomId - 1}/unavailable`).once("value")

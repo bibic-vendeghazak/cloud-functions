@@ -1,12 +1,15 @@
 import { sendFeedbackEmails } from "../email"
 import moment from "../moment"
 import { firestore } from "../firebase"
+import { CORS_WEB_URL } from "../constants"
 export {feedbackChanged} from "./changed"
 
 const RESERVATIONS_FS = firestore.collection("reservations")
 
+
+
 export async function cron(_, res) {
-  res.setHeader("Access-Control-Allow-Origin", "*")
+  res.setHeader("Access-Control-Allow-Origin", CORS_WEB_URL)
   const emails = []
   try {
     const reservations = await RESERVATIONS_FS

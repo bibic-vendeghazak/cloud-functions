@@ -7,6 +7,7 @@ export const ADMIN_ROOT = process.env.BETA ?
   "https://admin.bibicvendeghazak.hu"
 
 export const WEB = "https://bibicvendeghazak.hu"
+export const CORS_WEB_URL = process.env.NODE_ENV === "development" ? "*" : WEB
 export const ADDRESS = "Nagybajom, Bibic vendégházak, Iskola köz, Hungary"
 export const APP_NAME = "Bíbic vendégházak"
 export const ADMIN_EMAIL = "szallasfoglalas@bibicvendeghazak.hu"
