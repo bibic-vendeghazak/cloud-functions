@@ -17,7 +17,7 @@ export const getIcalEvent = ({timestamp, id, roomId, address, email, tel, name, 
     description: `
 név: ${name}
 telefonszám: ${tel}
-szoba: ${roomId}
+szoba: ${roomId.join(", ")}
 lakcím: ${address}
 felnőtt: ${adults}
 gyerek: ${children.reduce((acc, {count}) => acc+count, 0)}

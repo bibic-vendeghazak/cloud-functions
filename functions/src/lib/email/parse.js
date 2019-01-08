@@ -65,7 +65,7 @@ const parseCalendar = ({from, to, id, roomId, message, adults, children}) => gen
   details: `
 Foglalás azonosító: ${id}
 
-Szobaszám: ${roomId}
+Szobaszám: ${roomId.join(", ")}
 Megjegyzés: ${message}
 Felnőtt: ${adults}
 ${children.map(({name, count})=> `Gyerek ${name}: ${count}`).join("\n")}
@@ -91,7 +91,7 @@ export const commonFields = reservation => {
   return `
 Foglaló telefonszáma: ${tel}
 Foglaló lakcíme: ${address}
-Foglalni kívánt szoba száma: ${roomId}
+Foglalni kívánt szoba száma: ${roomId.join(", ")}
 Érkezés*: ${from}
 Távozás*: ${to}
 Felnőttek száma: ${adults}
