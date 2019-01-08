@@ -5,8 +5,8 @@ export {feedbackChanged} from "./changed"
 
 const RESERVATIONS_FS = firestore.collection("reservations")
 
-export const cron = async (_, res) => {
-  res.header("Access-Control-Allow-Origin", "*")
+export async function cron(_, res) {
+  res.setHeader("Access-Control-Allow-Origin", "*")
   const emails = []
   try {
     const reservations = await RESERVATIONS_FS

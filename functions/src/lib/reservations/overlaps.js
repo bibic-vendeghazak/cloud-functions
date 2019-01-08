@@ -5,9 +5,8 @@ import { RESERVATIONS_FS, ROOMS_DB } from "../firebase"
 /**
  * Return overlaps for a room
  */
-export const getOverlaps = ({query: {roomId}}, res) => {
-  // NOTE: Change origin to bibicvendeghazak.hu
-  res.header("Access-Control-Allow-Origin", "*")
+export async function getOverlaps({query: {roomId}}, res) {
+  res.setHeader("Access-Control-Allow-Origin", "*")
   const overlaps = []
   
   const unavailable = await ROOMS_DB.child(`${roomId - 1}/unavailable`).once("value")
