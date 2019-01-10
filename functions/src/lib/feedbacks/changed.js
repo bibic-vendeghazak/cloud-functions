@@ -16,17 +16,21 @@ export const feedbackChanged = FEEDBACKS_FUNC_REF
 
     feedbacks.forEach(feedback => {
       const {roomId, ratings} = feedback.data()
-      if (Array.isArray(rooms[roomId])) {
-        rooms[roomId].push(getRatingAverage(ratings))
-      } else {
-        rooms[roomId] = [(getRatingAverage(ratings))]
-      }
+      roomId.forEach(r => {
+        if (Array.isArray(rooms[r])) {
+          rooms[r].push(getRatingAverage(ratings))
+        } else {
+          rooms[r] = [(getRatingAverage(ratings))]
+        }
+      })
     })
 
     const averages = {}
-    Object.entries(rooms).forEach(([roomId, room]) =>
-      averages[roomId] = room.reduce((acc, rating) => acc + rating) / room.length
-    )
+    Object.entries(rooms).forEach(([roomId, room]) => {
+      roomId.forEach(roomId => {
+        averages[roomId] = room.reduce((acc, rating) => acc + rating) / room.length
+      })
+    })
 
     await FEEDBACKS_DB_REF.set(averages)
 
