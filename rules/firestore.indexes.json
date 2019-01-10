@@ -90,6 +90,20 @@
       "fields": [
         {
           "fieldPath": "roomId",
+          "arrayConfig": "CONTAINS"
+        },
+        {
+          "fieldPath": "to",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "reservations",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "roomId",
           "order": "ASCENDING"
         },
         {

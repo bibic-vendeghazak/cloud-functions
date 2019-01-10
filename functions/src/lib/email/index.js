@@ -83,16 +83,25 @@ const messages = {
 
 
 /**
- *
- * @param {object} reservation
- * @param {string} type One of: created, accepted, deleted, rejected, changed, changedFirst
- * @param {string} target who will receive the e-mail
+ * Sends an e-mail about a reservation.
+ * @param {object} reservation The reservation itself.
+ * @param {('created' | 'accepted' | 'deleted' | 'rejected' | 'changed' | 'changedFirst')} type 
+ * Type of the e-mail
+ * @param {('admin' | 'user')} target Who will receive the e-mail.
  */
-export const sendReservationEmail = async (reservation, type, target) => {
+export async function sendReservationEmail(reservation, type, target) {
+  let replyTo = ADMIN_EMAIL
+  let to = reservation.email
+
+  if (target === "admin") {
+    replyTo = NO_REPLY
+    to = ADMIN_EMAIL
+  }
+
   const mail = await {
-    replyTo: ADMIN_EMAIL,
+    replyTo,
     from: ADMIN_RESERVATION_EMAIL,
-    to: target === "admin" ? NO_REPLY : reservation.email,
+    to,
     text: messages[type][target].text(reservation),
     subject: messages[type][target].subject,
   }
@@ -111,12 +120,15 @@ export const sendReservationEmail = async (reservation, type, target) => {
   }
 
   await mailTransport.sendMail(mail)
-  return  console.log(`E-mail sent to ${target}`)
+  return  console.log(`E-mail sent to ${mail.to}`)
 }
 
-
-export const sendMessageEmails = async message =>
-  Promise.all([
+/**
+ * Sends an e-mail about a message.
+ * @param {object} message The message itself.
+ */
+export async function sendMessageEmails(message) {
+  return Promise.all([
     {
       // To user
       replyTo: ADMIN_EMAIL,
@@ -135,18 +147,22 @@ export const sendMessageEmails = async message =>
     }
   ].map(target => mailTransport.sendMail(target)))
     .then(() => console.log("Email sent"))
+}
 
 
-export const sendFeedbackEmails = async emails =>
-  emails.map(async (reservation) => {
-    const mail = {
-      replyTo: ADMIN_EMAIL,
-      from: ADMIN_RESERVATION_EMAIL,
-      to: reservation.email,
-      subject: "Reméljük, hogy jól érezte magát! 👌"
-    }
-    mail.html = await feedbackHTML(reservation)
-    await mailTransport.sendMail(mail)
-      .then(() => RESERVATIONS_FS.doc(reservation.reservationId).update({archived: true}))
-    console.log(`Feedback sent, reservation ${reservation.reservationId} archived`)
-  })
+export async function sendFeedbackEmails(emails) {
+  return (
+    emails.map(async reservation => {
+      const mail = {
+        replyTo: ADMIN_EMAIL,
+        from: ADMIN_RESERVATION_EMAIL,
+        to: reservation.email,
+        subject: "Reméljük, hogy jól érezte magát! 👌"
+      }
+      mail.html = await feedbackHTML(reservation)
+      await mailTransport.sendMail(mail)
+      await RESERVATIONS_FS.doc(reservation.reservationId).update({archived: true})
+      return console.log(`Feedback sent, reservation ${reservation.reservationId} archived`)
+    })
+  )
+}

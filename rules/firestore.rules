@@ -32,9 +32,8 @@ service cloud.firestore {
           "timestamp", "adults", "children", "price", 
           "foodService", "address", "from", "to", "archived"
         ]) &&
-        r.roomId is number &&
+        r.roomId is list &&
         r.id is string &&
-        r.roomId >= 1 &&
         r.lastHandledBy is string &&
         r.name is string &&
         r.name != "" &&
@@ -47,7 +46,6 @@ service cloud.firestore {
         r.children is list &&
         r.price is number &&
         r.price != 0 &&
-        r.foodService is string &&
         r.foodService in ["breakfast", "halfBoard"] &&
         r.handled is bool &&
         r.archived is bool

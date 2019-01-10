@@ -1,8 +1,13 @@
 import {startOfDay} from "date-fns"
 
 // Global variable
-export const ADMIN_ROOT = "https://bibic-vendeghazak-api.firebaseapp.com"
-export const WEB = "https://bibic-vendeghazak-web.firebaseapp.com"
+
+export const ADMIN_ROOT = process.env.BETA ? 
+  "https://bibic-vendeghazak-admin-beta.firebaseapp.com" :
+  "https://admin.bibicvendeghazak.hu"
+
+export const WEB = "https://bibicvendeghazak.hu"
+export const CORS_WEB_URL = process.env.NODE_ENV === "development" ? "*" : WEB
 export const ADDRESS = "Nagybajom, Bibic vendégházak, Iskola köz, Hungary"
 export const APP_NAME = "Bíbic vendégházak"
 export const ADMIN_EMAIL = "szallasfoglalas@bibicvendeghazak.hu"

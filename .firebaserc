@@ -2,6 +2,9 @@
   "projects": {
     "default": "bibic-vendeghazak-api",
     "master": "bibic-vendeghazak-api",
-    "develop": "bibic-vendeghazak-admin-beta"
+    "production": "bibic-vendeghazak-api",
+    "develop": "bibic-vendeghazak-admin-beta",
+    "beta": "bibic-vendeghazak-admin-beta",
+    "staging": "bibic-vendeghazak-admin-beta"
   }
 }
