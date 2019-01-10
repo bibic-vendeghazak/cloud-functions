@@ -152,7 +152,7 @@ export async function sendMessageEmails(message) {
 
 export async function sendFeedbackEmails(emails) {
   return (
-    emails.map(async (reservation) => {
+    emails.map(async reservation => {
       const mail = {
         replyTo: ADMIN_EMAIL,
         from: ADMIN_RESERVATION_EMAIL,

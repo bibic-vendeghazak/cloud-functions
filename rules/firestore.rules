@@ -46,7 +46,6 @@ service cloud.firestore {
         r.children is list &&
         r.price is number &&
         r.price != 0 &&
-        r.foodService is string &&
         r.foodService in ["breakfast", "halfBoard"] &&
         r.handled is bool &&
         r.archived is bool

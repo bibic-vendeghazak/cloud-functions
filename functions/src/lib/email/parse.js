@@ -82,7 +82,7 @@ ${constants.ADMIN_EMAIL}
 
 export const commonFields = reservation => {
   const {
-    tel, address, roomId, from, to, adults, children, message, price, foodService, id
+    tel, address, roomId, from, to, adults, children, message, price, foodService
   } = parseReservation(reservation)
 
   const getChildren = children =>
