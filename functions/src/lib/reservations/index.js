@@ -32,11 +32,9 @@ export const reservationCreated = reservationRef
     await updateReservationDates(from, to, roomId, snap.id)
     /* if creating dates was successful, send an e-mail, but
      * do not send if the reservation was added by the admin
-     * (an admin generated reservation has email@email.hu as default e-mail address)
-     * admins always get a reminder e-mail
      * NOTE: remember to add reservationId to the reservation that will be passed to the email
      */
-    if (reservation.email === "email@email.hu") {
+    if (reservation.email === "") {
       return console.log("created by admin, exiting...")
     }
 
@@ -57,11 +55,9 @@ export const reservationDeleted = reservationRef
     await updateReservationDates(from, to, roomId, reservationId, true)
     /* if sanitizing was successful, send an e-mail, but
      * do not send if the reservation was added by the admin
-     * (an admin generated reservation has email@email.hu as default e-mail address)
-     * admins always get a reminder e-mail
      * NOTE: remember to add reservationId to the reservation that will be passed to the email
      */
-    if (reservation.email === "email@email.hu") {
+    if (reservation.email === "") {
       return console.log("created by admin, exiting...")
     }
 
@@ -106,13 +102,12 @@ export const reservationChanged = reservationRef
 
     console.log("now the emails")
 
-   /* Send an e-mail about the changes, except if
-    * the reservation was added by the admin
-    * (an admin generated reservation has email@email.hu as default e-mail address)
-    * admins always get a reminder e-mail
+   /*
+    * Send an e-mail about the changes, except if
+    * the reservation was added by the admin.
     */
 
-    if (after.email === "email@email.hu") {
+    if (after.email === "") {
       return console.log("created by admin, exiting...")
     }
 
@@ -128,7 +123,7 @@ export const reservationChanged = reservationRef
       /* check if it is the first time that we send a mail to the user
       * (then it need a different phrasing in the email)
       */
-      if (before.email === "email@email.hu") {
+      if (before.email === "") {
         type = "changedFirst"
       } else {
         type = "changed"

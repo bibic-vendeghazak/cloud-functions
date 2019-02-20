@@ -10,7 +10,10 @@ const FEEDBACKS_DB_REF = database.ref("feedbacks")
 
 export const feedbackChanged = FEEDBACKS_FUNC_REF
   .onWrite(async ({before}) => {
+    if (!before) return console.log("feedback created")
+
     console.log(`feedback ${before.data().id} has been changed, recalculate averages...`)
+    
     const rooms = {}
     const feedbacks = await FEEDBACKS_FS_REF.where("accepted", "==", true).get()
 
@@ -27,9 +30,7 @@ export const feedbackChanged = FEEDBACKS_FUNC_REF
 
     const averages = {}
     Object.entries(rooms).forEach(([roomId, room]) => {
-      roomId.forEach(roomId => {
-        averages[roomId] = room.reduce((acc, rating) => acc + rating) / room.length
-      })
+      averages[roomId] = room.reduce((acc, rating) => acc + rating) / room.length
     })
 
     await FEEDBACKS_DB_REF.set(averages)
