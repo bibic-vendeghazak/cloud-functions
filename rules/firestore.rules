@@ -35,12 +35,10 @@ service cloud.firestore {
         r.roomId is list &&
         r.id is string &&
         r.lastHandledBy is string &&
-        r.name is string &&
-        r.name != "" &&
-        isEmail(r.email) &&
+        r.name is string && r.name != "" &&
+        (r.email == "" || isEmail(r.email)) &&
         isTel(r.tel) &&
-        r.address is string &&
-        r.address != "" &&
+        r.address is string && r.address != "" &&
         r.message is string &&
         r.adults is int &&
         r.children is list &&

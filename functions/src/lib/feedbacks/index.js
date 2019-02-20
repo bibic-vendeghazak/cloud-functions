@@ -19,7 +19,7 @@ export async function cron(_, res) {
 
     await reservations.forEach(reservation => {
       const {email, name, id, roomId} = reservation.data()
-      if (email !== "email@email.hu") {
+      if (email !== "") {
         emails.push({reservationId: reservation.id, email, name, id, roomId})
       }
     })
