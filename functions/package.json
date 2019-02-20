@@ -7,9 +7,7 @@
   "scripts": {
     "bolt": "firebase-bolt ../rules/database.rules.bolt",
     "deploy:db": "yarn bolt; firebase deploy --only database",
-
     "deploy:fs": "firebase deploy --only firestore",
-
     "logs": "firebase functions:log",
     "lint": "./node_modules/.bin/eslint src",
     "clean": "rm index.js; rm -rf lib",
@@ -17,9 +15,7 @@
     "start": "firebase experimental:functions:shell",
     "build": "yarn clean; babel src/index.js -o index.js; babel src/lib -d lib",
     "deploy:functions": "yarn build; firebase deploy --only functions",
-    
     "deploy:storage": "firebase deploy --only storage",
-
     "deploy": "yarn bolt; yarn build; firebase deploy",
     "deploy:beta": "BETA=true yarn build;yarn bolt; firebase -P beta deploy"
   },
